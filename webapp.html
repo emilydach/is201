@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      padding-top: 50px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .choices button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .choices button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    .scoreboard {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .computer-choice {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #playAgain {
+      display: none;
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #playAgain:hover {
+      background-color: #007B9A;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Number Guessing Game</h1>
+
+  <div class="choices" id="choices">
+    <p>Choose a number between 1 and 5:</p>
+    <button onclick="makeGuess(1)">1</button>
+    <button onclick="makeGuess(2)">2</button>
+    <button onclick="makeGuess(3)">3</button>
+    <button onclick="makeGuess(4)">4</button>
+    <button onclick="makeGuess(5)">5</button>
+  </div>
+
+  <div class="result" id="result"></div>
+  <div class="computer-choice" id="computerChoice"></div>
+  <div class="scoreboard" id="scoreboard"></div>
+  <button id="playAgain" onclick="resetGame()">Play Again</button>
+
+  <script>
+    let computerScore = 0;
+    let userScore = 0;
+    const computerWinLimit = 2;
+    const userWinLimit = 7;
+
+    function makeGuess(userNumber) {
+      const computerNumber = Math.floor(Math.random() * 5) + 1;
+
+      document.getElementById('computerChoice').textContent =
+        `Computer chose: ${computerNumber}`;
+
+      if (userNumber === computerNumber) {
+        computerScore++;
+        document.getElementById('result').textContent = "Numbers match. Computer gets a point!";
+      } else {
+        userScore++;
+        document.getElementById('result').textContent = "Numbers don't match. You get a point!";
+      }
+
+      updateScoreboard();
+      checkGameOver();
+    }
+
+    function updateScoreboard() {
+      document.getElementById('scoreboard').textContent =
+        `Computer: ${computerScore} | You: ${userScore}`;
+    }
+
+    function checkGameOver() {
+      if (computerScore >= computerWinLimit) {
+        document.getElementById('result').textContent = "Computer wins the game!";
+        endGame();
+      } else if (userScore >= userWinLimit) {
+        document.getElementById('result').textContent = "You win the game!";
+        endGame();
+      }
+    }
+
+    function endGame() {
+      document.getElementById('choices').style.display = 'none';
+      document.getElementById('playAgain').style.display = 'inline-block';
+    }
+
+    function resetGame() {
+      computerScore = 0;
+      userScore = 0;
+      document.getElementById('result').textContent = "";
+      document.getElementById('computerChoice').textContent = "";
+      updateScoreboard();
+      document.getElementById('choices').style.display = 'block';
+      document.getElementById('playAgain').style.display = 'none';
+    }
+
+    // Initialize scoreboard on load
+    updateScoreboard();
+  </script>
+
+</body>
+</html>
